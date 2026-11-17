@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>عمر يحتفل بيوم الطفل العالمي</title>
+<style>
+:root{--bg:#fff8ec;--card:#ffffff;--ink:#3b2a1a;--accent:#ff7a59;--soft:#ffe3d6;--line:#f0d9c4;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1a2b;--card:#2a2640;--ink:#fdf1e3;--accent:#ff8f70;--soft:#3a3358;--line:#4a4270}}
+:root[data-theme="dark"]{--bg:#1d1a2b;--card:#2a2640;--ink:#fdf1e3;--accent:#ff8f70;--soft:#3a3358;--line:#4a4270}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",Tahoma,"Noto Naskh Arabic",system-ui,sans-serif;line-height:1.6}
+main{max-width:560px;margin:0 auto;padding:16px}
+h1{text-align:center;font-size:1.6rem;margin:8px 0 2px}
+.sub{text-align:center;margin:0 0 14px;opacity:.85}
+section{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:14px;margin:14px 0}
+h2{font-size:1.1rem;margin:0 0 10px}
+.balloons{display:flex;justify-content:space-around;gap:6px}
+.b{font-size:3.2rem;background:none;border:0;cursor:pointer;animation:fl 2.4s ease-in-out infinite;padding:4px}
+.b:nth-child(2){animation-delay:.4s}.b:nth-child(3){animation-delay:.8s}.b:nth-child(4){animation-delay:1.2s}
+.b.pop{animation:none;opacity:.25;transform:scale(.7)}
+@keyframes fl{50%{transform:translateY(-8px)}}
+.msg{min-height:3.2em;text-align:center;background:var(--soft);border-radius:14px;padding:10px;margin-top:8px;font-size:1.05rem}
+.dreams{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.dreams button,.tools button{font:inherit;color:var(--ink);background:var(--soft);border:2px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer}
+.dreams button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+#dream{text-align:center;font-size:1.25rem;font-weight:700;margin-top:10px;min-height:1.6em}
+canvas{width:100%;height:260px;background:#fff;border:2px dashed var(--line);border-radius:14px;touch-action:none;display:block}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;align-items:center}
+.sw{width:30px;height:30px;border-radius:50%;border:3px solid var(--card);outline:2px solid var(--line);padding:0;cursor:pointer}
+.sw.on{outline-color:var(--ink)}
+.foot{text-align:center;opacity:.8;margin:18px 0 8px}
+.fx{position:fixed;pointer-events:none;font-size:1.8rem;animation:up 1.4s ease-out forwards;z-index:5}
+@keyframes up{to{transform:translateY(-140px) rotate(25deg);opacity:0}}
+</style>
+</head>
+<body>
+<main>
+<h1>🌈 أنا عمر 🌈</h1>
+<p class="sub">وأحتفل معكم بيوم الطفل العالمي</p>
+
+<section>
+<h2>🎈 فجّر البالونات واقرأ أمنياتي</h2>
+<div class="balloons" id="bal"></div>
+<div class="msg" id="msg">اضغط على بالون…</div>
+</section>
+
+<section>
+<h2>⭐ وش أحلم أكون؟</h2>
+<div class="dreams" id="dr"></div>
+<div id="dream"></div>
+</section>
+
+<section>
+<h2>🎨 ارسم معي</h2>
+<canvas id="cv"></canvas>
+<div class="tools" id="tl"></div>
+</section>
+
+<p class="foot">الطفولة لعب وضحك وأحلام كبيرة 💛</p>
+</main>
+<script>
+function fx(e,t){var s=document.createElement('span');s.className='fx';s.textContent=t;
+var x=(e&&e.clientX)||innerWidth/2,y=(e&&e.clientY)||innerHeight/2;
+s.style.left=(x-14)+'px';s.style.top=(y-14)+'px';document.body.appendChild(s);setTimeout(function(){s.remove()},1400)}
+function burst(e,list){for(var i=0;i<6;i++){(function(i){setTimeout(function(){fx({clientX:(e.clientX||innerWidth/2)+(i-3)*18,clientY:e.clientY||innerHeight/2},list[i%list.length])},i*60)})(i)}}
+
+var wishes=["أتمنى أن يكون كل الأطفال سعداء 😊","أحب اللعب مع أصدقائي في الروضة ⚽","أحب أمي وأبي كثيراً ❤️","أتمنى أن يتعلم كل الأطفال ويلعبوا بأمان 📚"];
+var cols=["🎈","🎈","🎈","🎈"];
+var bal=document.getElementById('bal'),msg=document.getElementById('msg');
+wishes.forEach(function(w,i){var b=document.createElement('button');b.className='b';b.textContent=cols[i];b.setAttribute('aria-label','بالون '+(i+1));
+b.onclick=function(e){b.classList.add('pop');msg.textContent=w;burst(e,['✨','🎉','⭐'])};bal.appendChild(b)});
+
+var ds=[["👨‍⚕️","طبيب"],["👨‍✈️","طيار"],["👨‍🏫","معلم"],["👨‍🚀","رائد فضاء"],["⚽","لاعب كرة"],["👮","شرطي"],["🎨","فنان"]];
+var dr=document.getElementById('dr'),dm=document.getElementById('dream');
+ds.forEach(function(d){var b=document.createElement('button');b.textContent=d[0]+' '+d[1];
+b.onclick=function(e){[].forEach.call(dr.children,function(c){c.classList.remove('on')});b.classList.add('on');
+dm.textContent='أنا عمر، وحلمي أن أكون '+d[1]+' '+d[0];burst(e,['⭐','🌟','✨'])};dr.appendChild(b)});
+
+var cv=document.getElementById('cv'),c=cv.getContext('2d'),col='#ff5a5f',draw=false;
+function fit(){var r=cv.getBoundingClientRect(),d=devicePixelRatio||1;cv.width=r.width*d;cv.height=r.height*d;c.scale(d,d);c.lineCap='round';c.lineJoin='round'}
+fit();
+function pt(e){var r=cv.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top]}
+cv.addEventListener('pointerdown',function(e){draw=true;cv.setPointerCapture(e.pointerId);var p=pt(e);c.strokeStyle=col;c.lineWidth=6;c.beginPath();c.moveTo(p[0],p[1]);c.lineTo(p[0]+.1,p[1]);c.stroke()});
+cv.addEventListener('pointermove',function(e){if(!draw)return;var p=pt(e);c.lineTo(p[0],p[1]);c.stroke()});
+['pointerup','pointercancel'].forEach(function(n){cv.addEventListener(n,function(){draw=false})});
+var tl=document.getElementById('tl');
+["#ff5a5f","#ffb400","#2ec27e","#3b82f6","#a855f7","#3b2a1a"].forEach(function(k,i){var s=document.createElement('button');s.className='sw'+(i?'':' on');s.style.background=k;s.setAttribute('aria-label','لون');
+s.onclick=function(){col=k;[].forEach.call(tl.querySelectorAll('.sw'),function(x){x.classList.remove('on')});s.classList.add('on')};tl.appendChild(s)});
+var cl=document.createElement('button');cl.textContent='🧽 مسح';cl.onclick=function(){c.clearRect(0,0,cv.width,cv.height)};tl.appendChild(cl);
+</script>
+</body>
+</html>

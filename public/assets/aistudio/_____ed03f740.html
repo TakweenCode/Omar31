@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>رسالتي في يوم الطفل</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--c1:#5B8DEF;--c2:#B06AB3;--c3:#FF8FA3;--ink:#2b2d42;--soft:#f6f3ff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{font-family:Cairo,Tahoma,Arial,sans-serif;color:var(--ink);min-height:100vh;
+ background:linear-gradient(160deg,var(--c1),var(--c2) 55%,var(--c3));padding:16px 14px 28px}
+.wrap{max-width:560px;margin:0 auto}
+header{text-align:center;color:#fff;margin:6px 0 14px}
+header h1{margin:0;font-size:30px;font-weight:800;text-shadow:0 2px 8px rgba(0,0,0,.18)}
+header p{margin:4px 0 0;font-size:15px;opacity:.95}
+.dots{display:flex;justify-content:center;gap:8px;margin:10px 0 14px}
+.dots i{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.4);transition:.2s}
+.dots i.on{background:#fff;transform:scale(1.3)}
+.panel{background:#fff;border-radius:26px;padding:20px 18px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.panel h2{margin:0 0 6px;font-size:22px;font-weight:800}
+.panel .hint{margin:0 0 14px;color:#6b6f85;font-size:15px}
+.hidden{display:none}
+input[type=text],textarea{width:100%;font:inherit;font-size:20px;padding:14px 16px;border:3px solid #e4defa;border-radius:16px;background:var(--soft);outline:none;color:var(--ink)}
+input[type=text]:focus,textarea:focus{border-color:var(--c2)}
+textarea{resize:none;height:84px;font-size:18px}
+.btn{font:inherit;font-weight:800;font-size:18px;border:0;border-radius:16px;padding:14px 18px;cursor:pointer;transition:transform .1s}
+.btn:active{transform:scale(.97)}
+.primary{background:linear-gradient(135deg,var(--c2),var(--c3));color:#fff;width:100%;margin-top:14px}
+.ghost{background:var(--soft);color:var(--ink)}
+.row{display:flex;gap:10px;margin-top:10px}
+.row .btn{flex:1}
+.canvas-box{border:3px solid #e4defa;border-radius:18px;overflow:hidden;background:#fff;line-height:0}
+#draw{width:100%;aspect-ratio:1/1;touch-action:none;cursor:crosshair}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0 4px}
+.sw{width:34px;height:34px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #d7d2ee;cursor:pointer;padding:0}
+.sw.sel{box-shadow:0 0 0 3px var(--ink);transform:scale(1.1)}
+.sz{width:42px;height:42px;border-radius:12px;border:2px solid #d7d2ee;background:#fff;display:grid;place-items:center;cursor:pointer;padding:0}
+.sz.sel{border-color:var(--ink);background:var(--soft)}
+.sz span{display:block;border-radius:50%;background:var(--ink)}
+.tool{font:inherit;font-weight:700;font-size:14px;border:2px solid #d7d2ee;background:#fff;border-radius:12px;padding:8px 10px;cursor:pointer}
+.tool.sel{border-color:var(--ink);background:var(--soft)}
+.chips{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.chip{font:inherit;font-weight:700;font-size:17px;text-align:right;border:3px solid #e4defa;background:var(--soft);border-radius:16px;padding:12px 14px;cursor:pointer}
+.chip.sel{border-color:var(--c2);background:#efe6ff}
+#card{width:100%;height:auto;border-radius:18px;display:block;box-shadow:0 6px 20px rgba(0,0,0,.2)}
+.note{text-align:center;color:rgba(255,255,255,.92);font-size:13px;margin-top:16px}
+.err{color:#c62828;font-weight:700;font-size:14px;margin-top:8px;min-height:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🎈 رسالتي في يوم الطفل 🎈</h1>
+    <p>يوم الطفل العالمي · 20 نوفمبر</p>
+  </header>
+  <div class="dots" id="dots"><i></i><i></i><i></i><i></i></div>
+
+  <section class="panel" id="s1">
+    <h2>ما اسمك؟</h2>
+    <p class="hint">اكتب اسمك الأول فقط.</p>
+    <input type="text" id="name" maxlength="20" placeholder="مثال: عمر" autocomplete="off">
+    <div class="err" id="e1"></div>
+    <button class="btn primary" id="n1">التالي ✨</button>
+  </section>
+
+  <section class="panel hidden" id="s2">
+    <h2>ارسم رسمتك 🎨</h2>
+    <p class="hint">ارسم بإصبعك: عائلتك، حلمك، أو لعبتك المفضلة.</p>
+    <div class="canvas-box"><canvas id="draw" width="900" height="900"></canvas></div>
+    <div class="tools" id="colors"></div>
+    <div class="tools">
+      <button class="sz sel" data-s="8" title="رفيع"><span style="width:6px;height:6px"></span></button>
+      <button class="sz" data-s="16" title="وسط"><span style="width:12px;height:12px"></span></button>
+      <button class="sz" data-s="30" title="سميك"><span style="width:22px;height:22px"></span></button>
+      <button class="tool" id="eraser">🧽 ممحاة</button>
+      <button class="tool" id="undo">↩️ تراجع</button>
+      <button class="tool" id="clear">🗑️ مسح</button>
+    </div>
+    <div class="row">
+      <button class="btn ghost" id="b2">رجوع</button>
+      <button class="btn ghost" id="skip2">بدون رسمة</button>
+    </div>
+    <button class="btn primary" id="n2">التالي ✨</button>
+  </section>
+
+  <section class="panel hidden" id="s3">
+    <h2>اختر عبارتك 💬</h2>
+    <p class="hint">اختر عبارة أو اكتب عبارتك بنفسك.</p>
+    <div class="chips" id="chips"></div>
+    <textarea id="custom" maxlength="90" placeholder="أو اكتب عبارتك هنا..."></textarea>
+    <div class="err" id="e3"></div>
+    <div class="row">
+      <button class="btn ghost" id="b3">رجوع</button>
+    </div>
+    <button class="btn primary" id="n3">اصنع بطاقتي 🎉</button>
+  </section>
+
+  <section class="panel hidden" id="s4">
+    <h2>بطاقتك جاهزة! 🌟</h2>
+    <p class="hint">احفظها كصورة وأرسلها للمعلمة.</p>
+    <canvas id="card" width="1080" height="1350"></canvas>
+    <button class="btn primary" id="save">📥 حفظ الصورة</button>
+    <div class="row">
+      <button class="btn ghost" id="share">📤 مشاركة</button>
+      <button class="btn ghost" id="b4">✏️ تعديل</button>
+    </div>
+    <button class="btn ghost" id="again" style="width:100%;margin-top:10px">🔄 بطاقة جديدة</button>
+  </section>
+
+  <p class="note">🔒 كل شيء يتم داخل جهازك فقط، ولا يُرسل أي اسم أو رسمة إلى أي خادم.</p>
+</div>
+
+<script>
+const CONFIG = {
+  teacher: 'المعلمة نورة الحصيني',
+  footer: 'يوم الطفل العالمي · 20 نوفمبر · الروضة 31'
+};
+const PHRASES = [
+  'أحب أن ألعب وأتعلم وأضحك كل يوم',
+  'من حقي أن ألعب وأتعلم وأكون آمنًا',
+  'الطفولة أجمل بالحب واللعب',
+  'اللعب حقي والتعلّم حلمي',
+  'كل الأطفال متساوون ولهم حقوق',
+  'أريد عالمًا مليئًا بالفرح والسلام'
+];
+const COLORS = ['#e63946','#ff9f1c','#ffd60a','#2a9d8f','#3a86ff','#8338ec','#ff70a6','#6d4c41','#222222'];
+
+const $ = id => document.getElementById(id);
+let step = 1, color = COLORS[0], size = 8, eraser = false, drawn = false, phrase = '', history = [];
+
+/* ---------- navigation ---------- */
+function show(n){
+  step = n;
+  [1,2,3,4].forEach(i => $('s'+i).classList.toggle('hidden', i !== n));
+  [...$('dots').children].forEach((d,i) => d.classList.toggle('on', i === n-1));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ---------- step 1 ---------- */
+$('n1').onclick = () => {
+  if (!$('name').value.trim()){ $('e1').textContent = 'اكتب اسمك أولًا 🙂'; return; }
+  $('e1').textContent = ''; show(2);
+};
+$('name').addEventListener('keydown', e => { if (e.key === 'Enter') $('n1').click(); });
+
+/* ---------- step 2: drawing ---------- */
+const dc = $('draw'), dx = dc.getContext('2d');
+function resetCanvas(){ dx.fillStyle = '#fff'; dx.fillRect(0,0,dc.width,dc.height); drawn = false; history = []; }
+resetCanvas();
+
+COLORS.forEach((c,i) => {
+  const b = document.createElement('button');
+  b.className = 'sw' + (i === 0 ? ' sel' : ''); b.style.background = c; b.title = c;
+  b.onclick = () => {
+    color = c; eraser = false; $('eraser').classList.remove('sel');
+    document.querySelectorAll('.sw').forEach(x => x.classList.remove('sel')); b.classList.add('sel');
+  };
+  $('colors').appendChild(b);
+});
+document.querySelectorAll('.sz').forEach(b => b.onclick = () => {
+  size = +b.dataset.s;
+  document.querySelectorAll('.sz').forEach(x => x.classList.remove('sel')); b.classList.add('sel');
+});
+$('eraser').onclick = () => { eraser = !eraser; $('eraser').classList.toggle('sel', eraser); };
+$('undo').onclick = () => {
+  const s = history.pop(); if (s) dx.putImageData(s, 0, 0);
+  if (!history.length) drawn = false;
+};
+$('clear').onclick = resetCanvas;
+
+let drawing = false, last = null;
+function pos(e){
+  const r = dc.getBoundingClientRect();
+  return { x:(e.clientX-r.left)*dc.width/r.width, y:(e.clientY-r.top)*dc.height/r.height };
+}
+function stroke(a,b){
+  dx.strokeStyle = eraser ? '#fff' : color; dx.lineWidth = size; dx.lineCap = 'round'; dx.lineJoin = 'round';
+  dx.beginPath(); dx.moveTo(a.x,a.y); dx.lineTo(b.x+0.01,b.y+0.01); dx.stroke();
+}
+dc.addEventListener('pointerdown', e => {
+  e.preventDefault(); dc.setPointerCapture(e.pointerId);
+  history.push(dx.getImageData(0,0,dc.width,dc.height)); if (history.length > 15) history.shift();
+  drawing = true; last = pos(e); stroke(last,last); if (!eraser) drawn = true;
+});
+dc.addEventListener('pointermove', e => { if (!drawing) return; const p = pos(e); stroke(last,p); last = p; });
+['pointerup','pointercancel','pointerleave'].forEach(t => dc.addEventListener(t, () => drawing = false));
+
+$('b2').onclick = () => show(1);
+$('n2').onclick = () => show(3);
+$('skip2').onclick = () => { resetCanvas(); show(3); };
+
+/* ---------- step 3: phrase ---------- */
+PHRASES.forEach(p => {
+  const b = document.createElement('button');
+  b.className = 'chip'; b.textContent = p;
+  b.onclick = () => {
+    phrase = p; $('custom').value = '';
+    document.querySelectorAll('.chip').forEach(x => x.classList.remove('sel')); b.classList.add('sel');
+  };
+  $('chips').appendChild(b);
+});
+$('custom').addEventListener('input', () => {
+  if ($('custom').value.trim()){
+    phrase = $('custom').value.trim();
+    document.querySelectorAll('.chip').forEach(x => x.classList.remove('sel'));
+  } else phrase = '';
+});
+$('b3').onclick = () => show(2);
+$('n3').onclick = async () => {
+  if (!drawn && !phrase){ $('e3').textContent = 'اختر عبارة أو ارجع وارسم رسمة 🙂'; return; }
+  $('e3').textContent = '';
+  await renderCard(); show(4);
+};
+
+/* ---------- card rendering ---------- */
+function rng(seed){ return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed>>>15, 1|seed); t = t + Math.imul(t ^ t>>>7, 61|t) ^ t; return ((t ^ t>>>14)>>>0)/4294967296; }; }
+function rr(x, X, Y, W, H, R){
+  x.beginPath(); x.moveTo(X+R,Y); x.arcTo(X+W,Y,X+W,Y+H,R); x.arcTo(X+W,Y+H,X,Y+H,R); x.arcTo(X,Y+H,X,Y,R); x.arcTo(X,Y,X+W,Y,R); x.closePath();
+}
+function star(x, cx, cy, r, col){
+  x.fillStyle = col; x.beginPath();
+  for (let i = 0; i < 10; i++){ const a = -Math.PI/2 + i*Math.PI/5, rad = i%2 ? r*0.45 : r; x.lineTo(cx+Math.cos(a)*rad, cy+Math.sin(a)*rad); }
+  x.closePath(); x.fill();
+}
+function balloon(x, cx, cy, r, col){
+  x.strokeStyle = 'rgba(255,255,255,.8)'; x.lineWidth = 4; x.beginPath();
+  x.moveTo(cx, cy+r*1.2); x.bezierCurveTo(cx-22, cy+r*1.2+50, cx+22, cy+r*1.2+90, cx, cy+r*1.2+140); x.stroke();
+  x.fillStyle = col; x.beginPath(); x.ellipse(cx, cy, r, r*1.2, 0, 0, Math.PI*2); x.fill();
+  x.beginPath(); x.moveTo(cx, cy+r*1.2); x.lineTo(cx-10, cy+r*1.2+16); x.lineTo(cx+10, cy+r*1.2+16); x.closePath(); x.fill();
+  x.fillStyle = 'rgba(255,255,255,.4)'; x.beginPath(); x.ellipse(cx-r*0.35, cy-r*0.45, r*0.18, r*0.3, -0.5, 0, Math.PI*2); x.fill();
+}
+function wrap(x, text, maxW){
+  const words = text.split(/\s+/), lines = []; let cur = '';
+  for (const w of words){
+    const t = cur ? cur + ' ' + w : w;
+    if (x.measureText(t).width > maxW && cur){ lines.push(cur); cur = w; } else cur = t;
+  }
+  if (cur) lines.push(cur); return lines;
+}
+async function renderCard(){
+  try { await document.fonts.load('800 60px Cairo'); await document.fonts.load('600 40px Cairo'); } catch(e){}
+  const c = $('card'), x = c.getContext('2d'), W = 1080, H = 1350, F = 'Cairo, Tahoma, Arial, sans-serif';
+  x.direction = 'rtl'; x.textAlign = 'center'; x.textBaseline = 'middle';
+
+  const g = x.createLinearGradient(0,0,W*0.4,H);
+  g.addColorStop(0,'#5B8DEF'); g.addColorStop(0.55,'#B06AB3'); g.addColorStop(1,'#FF8FA3');
+  x.fillStyle = g; x.fillRect(0,0,W,H);
+
+  const r = rng(20);
+  const cols = ['#ffd60a','#ffffff','#7bf1a8','#ff9f1c','#9ad7ff'];
+  for (let i = 0; i < 70; i++){
+    x.save(); x.translate(r()*W, r()*H); x.rotate(r()*Math.PI);
+    x.fillStyle = cols[i % cols.length]; x.globalAlpha = 0.75;
+    x.fillRect(-7, -14, 14, 28); x.restore();
+  }
+  x.globalAlpha = 1;
+  balloon(x, 120, 180, 62, '#ff5d73'); balloon(x, 235, 120, 50, '#ffd60a'); balloon(x, 960, 170, 64, '#4cd6a3'); balloon(x, 850, 115, 48, '#6ab7ff');
+  star(x, 540, 40, 22, '#fff'); star(x, 60, 330, 20, '#ffd60a'); star(x, 1025, 340, 22, '#fff');
+
+  x.fillStyle = '#fff'; x.font = `800 90px ${F}`;
+  x.shadowColor = 'rgba(0,0,0,.2)'; x.shadowBlur = 12; x.shadowOffsetY = 4;
+  x.fillText('يوم الطفل العالمي', W/2, 150);
+  x.shadowColor = 'transparent'; x.font = `600 44px ${F}`; x.fillText('20 نوفمبر', W/2, 225);
+
+  const PX = 60, PY = 285, PW = 960, PH = 880;
+  x.shadowColor = 'rgba(0,0,0,.25)'; x.shadowBlur = 30; x.shadowOffsetY = 10;
+  x.fillStyle = '#fff'; rr(x, PX, PY, PW, PH, 48); x.fill();
+  x.shadowColor = 'transparent';
+
+  const hasD = drawn, hasP = !!phrase;
+  function drawPic(sz, X, Y){
+    x.save(); rr(x, X, Y, sz, sz, 28); x.clip(); x.drawImage(dc, X, Y, sz, sz); x.restore();
+    x.strokeStyle = '#e4defa'; x.lineWidth = 6; rr(x, X, Y, sz, sz, 28); x.stroke();
+  }
+  x.fillStyle = '#2b2d42';
+  if (hasD && hasP){
+    drawPic(660, (W-660)/2, PY+30);
+    x.font = `800 54px ${F}`; let L = wrap(x, phrase, 840);
+    if (L.length > 2){ x.font = `800 44px ${F}`; L = wrap(x, phrase, 840); }
+    const lh = 66, y0 = PY+30+660+ (PH-30-660)/2 - ((L.length-1)*lh)/2;
+    L.forEach((t,i) => x.fillText(t, W/2, y0 + i*lh));
+  } else if (hasD){
+    drawPic(780, (W-780)/2, PY+50);
+  } else {
+    let fs = 84; x.font = `800 ${fs}px ${F}`; let L = wrap(x, phrase, 800);
+    while (L.length > 5 && fs > 50){ fs -= 6; x.font = `800 ${fs}px ${F}`; L = wrap(x, phrase, 800); }
+    const lh = fs*1.45, y0 = PY + PH/2 - ((L.length-1)*lh)/2 + 20;
+    star(x, W/2, PY+130, 60, '#ffd60a');
+    L.forEach((t,i) => x.fillText(t, W/2, y0 + i*lh));
+  }
+
+  const name = $('name').value.trim();
+  const attr = `مشاركة ${name} – بإشراف ${CONFIG.teacher}`;
+  let fs = 46; x.fillStyle = '#fff';
+  do { x.font = `800 ${fs}px ${F}`; fs -= 2; } while (x.measureText(attr).width > 980 && fs > 26);
+  x.fillText(attr, W/2, 1240);
+  x.font = `600 34px ${F}`; x.globalAlpha = 0.92; x.fillText(CONFIG.footer, W/2, 1305); x.globalAlpha = 1;
+}
+
+/* ---------- step 4: export ---------- */
+function blobOf(){ return new Promise(res => $('card').toBlob(res, 'image/png')); }
+$('save').onclick = async () => {
+  const b = await blobOf(), a = document.createElement('a');
+  a.href = URL.createObjectURL(b); a.download = 'children-day-card.png';
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+};
+$('share').onclick = async () => {
+  const b = await blobOf(), f = new File([b], 'children-day-card.png', {type:'image/png'});
+  if (navigator.canShare && navigator.canShare({files:[f]})){
+    try { await navigator.share({files:[f], title:'يوم الطفل العالمي'}); } catch(e){}
+  } else { $('save').click(); alert('تم حفظ الصورة، أرسلها من معرض الصور.'); }
+};
+$('b4').onclick = () => show(3);
+$('again').onclick = () => {
+  resetCanvas(); phrase = ''; $('custom').value = ''; $('name').value = '';
+  document.querySelectorAll('.chip').forEach(x => x.classList.remove('sel')); show(1);
+};
+show(1);
+</script>
+</body>
+</html>
