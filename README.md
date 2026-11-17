@@ -13,7 +13,7 @@
 - **خصوصية تامة:** جميع الرسومات والأسماء تُعالج داخل جهاز المستخدم فقط دون إرسال أي بيانات لأي خادم.
 
 ## طريقة النشر على GitHub Pages
-1. ارفع ملفات المشروع إلى مستودع جديد على حسابك في **GitHub** على الفرع الرئيسي `main`.
+1. ارفع جميع ملفات المشروع (بما فيها مجلد `.github/workflows/deploy.yml`) إلى مستودعك على **GitHub** على الفرع الرئيسي `main`.
 2. من إعدادات المستودع انتقل إلى **Settings ← Pages**.
-3. تحت **Build and deployment** اختر **Source: GitHub Actions**.
-4. سيعمل ملف `.github/workflows/deploy.yml` تلقائيًا وينشر التطبيق على رابط `https://<username>.github.io/<repo-name>/`.
+3. تحت **Build and deployment** اختر **Source: GitHub Actions** (مهم: لا تختر *Deploy from a branch* لأن المتصفح سيقرأ ملف `src/main.tsx` الخام ويعطي خطأ 404).
+4. بعد اكتمال تشغيل الـ Workflow في تبويب **Actions**، سيُنشر التطبيق تلقائياً على رابط `https://<username>.github.io/<repo-name>/`.
