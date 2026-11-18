@@ -115,7 +115,7 @@ export default function App() {
             {ATTRIBUTION.closingQuote} 💛
           </p>
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
-            <span>مشاركة: {ATTRIBUTION.studentDefault}</span>
+            <span>مشاركة: {ATTRIBUTION.studentFullName}</span>
             <span className="mx-2 text-slate-400" aria-hidden="true">
               ·
             </span>

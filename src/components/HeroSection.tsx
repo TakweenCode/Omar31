@@ -24,7 +24,7 @@ export function HeroSection({
         <div className="flex flex-col justify-between rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 lg:col-span-7 dark:border-slate-800 dark:bg-[#182235]">
           <div>
             <p className="text-sm font-medium text-slate-600 dark:text-slate-300">
-              <span>مشاركة الطالب: {ATTRIBUTION.studentDefault}</span>
+              <span>مشاركة: {ATTRIBUTION.studentFullName}</span>
               <span className="mx-2 text-slate-400" aria-hidden="true">
                 ·
               </span>
@@ -119,7 +119,7 @@ export function HeroSection({
                 {ATTRIBUTION.occasion}
               </p>
               <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                مشاركة عمر · {ATTRIBUTION.school}
+                مشاركة {ATTRIBUTION.studentFullName} · {ATTRIBUTION.school}
               </p>
             </div>
           )}

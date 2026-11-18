@@ -30,6 +30,7 @@ export interface CardTheme {
 
 export const ATTRIBUTION = {
   studentDefault: 'عمر',
+  studentFullName: 'عمر المالكي',
   teacher: 'المعلمة نورة الحصيني',
   school: 'الروضة 31',
   occasion: 'يوم الطفل العالمي',
